@@ -46,6 +46,6 @@ Descargar la colección de Postman en la carpeta /api e importarla en Postman
 
 Falta:
 Lo que es Auth (login, logout, configuración de usuario, JWT) 
-Terminar de configurar el actualizarTurno, el método PUT en postman y en codigo
+
 
 
