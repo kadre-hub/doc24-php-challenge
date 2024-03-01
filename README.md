@@ -9,22 +9,22 @@
 ## instalación
 
 1. Clonar el repositorio: 
-git clone <repository-url>
+git clone repository-url
 2. Ingresar a la carpeta del proyecto: 
-cd <project-directory>
+cd project-directory
 3. Instalar las dependencias: 
 composer install
 4. Crear la base de datos
-5. Crear y configurar archivo .env en el raíz del proyecto, con la siguiente configuración:
-DATABASE_DRIVER=[MOTOR]
-DATABASE_HOST=[HOST]
-DATABASE_PORT=[PUERTO]
-DATABASE_NAME=[NOMBREDB]
-DATABASE_USER=[USER]
-DATABASE_PASSWD=[PASSWORD]
-DATABASE_CHARSET = [CHARSET]
-DATABASE_COLLATION = [COLLATION]
-DATABASE_PREFIX = [PREFIX]
+5. Crear y configurar archivo .env en el raíz del proyecto, con la siguiente configuración:\n
+DATABASE_HOST=[HOST]\n
+DATABASE_DRIVER=[MOTOR]\n
+DATABASE_PORT=[PUERTO]\n
+DATABASE_NAME=[NOMBREDB]\n
+DATABASE_USER=[USER]\n
+DATABASE_PASSWD=[PASSWORD]\n
+DATABASE_CHARSET = [CHARSET]\n
+DATABASE_COLLATION = [COLLATION]\n
+DATABASE_PREFIX = [PREFIX]\n
 
 ENTITY_DIR = './src/Entity/'
 DEBUG      = 0
