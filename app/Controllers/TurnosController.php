@@ -58,69 +58,63 @@ class TurnosController
         $data = $request->getParsedBody();
         $validacionDatos = false;
         
-        if (empty($data['institucion_id']) || empty($data['doctor_id']) || empty($data['dia']) || empty($data['hora'])) {
-            $validacionDatos = true;
+        $camposRequeridos = ['institucion_id', 'doctor_id', 'dia', 'hora'];
+        foreach ($camposRequeridos as $campo) {
+            if (empty($data[$campo])) {
+                $validacionDatos = true;
+                $mensaje[] = "Por favor rellenar los campos correctamente: $campo";
+            }
         }
         
-        if ($validacionDatos) {
-            $mensaje[] = "Por favor rellenar los campos correctamente: doctor_id, institucion_id, fecha y día";
-            $response->getBody()->write(json_encode([
-                'success' => false,
-                'message' => 'El turno no fue dado de alta',
-                'errores' => $mensaje
-                ]));  
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-            }          
-        
-        $Turno = new Turno();
-        
-        $ExisteDoctor = Doctor::where("id", $data['doctor_id'])->count();
-        $ExisteInstitucion = Institucion::where("id", $data['institucion_id'])->count(); 
-        $ExisteTurno = Turno::where('doctor_id', $data['doctor_id'])
-            ->where('dia', $data['dia'])
-            ->where('hora', $data['hora'])
-            ->count();
-        
-        if ($ExisteDoctor == 0 || $ExisteInstitucion == 0) {
-            $validacionDatos = true;
-            $mensaje[] = "El doctor o la institución no existen";
-        }
-        if ($ExisteTurno != 0) {
-            $validacionDatos = true;
-            $mensaje[] = "El turno ya existe o el doctor está ocupado en otra institución en esta fecha y hora.";
+        if (empty($mensaje)) {
+            $existeDoctor = Doctor::where("id", $data['doctor_id'])->exists();
+            $existeInstitucion = Institucion::where("id", $data['institucion_id'])->exists(); 
+            $existeTurno = Turno::where('doctor_id', $data['doctor_id'])
+                ->where('dia', $data['dia'])
+                ->where('hora', $data['hora'])
+                ->exists();
+            
+            if (!$existeDoctor || !$existeInstitucion) {
+                $validacionDatos = true;
+                $mensaje[] = "El doctor o la institución no existen";
+            }
+            
+            if ($existeTurno) {
+                $validacionDatos = true;
+                $mensaje[] = "El turno ya existe o el doctor está ocupado en otra institución en esta fecha y hora.";
+            }
+            
+            if (!v::date('Y-m-d')->validate($data['dia']) || !v::regex('/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/')->validate($data['hora'])) {
+                $validacionDatos = true;
+                $mensaje[] ="Fecha u hora incorrecta.";      
+            }
         }
         
-        if (!v::date('Y-m-d')->validate($data['dia']) || !v::regex('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/')->validate($data['hora'])) {
-            $validacionDatos = true;
-            $mensaje[] ="Fecha u hora incorrecta.";      
-          }  
-
         if (!$validacionDatos) {
             $status = 200;
-            $Turno->doctor_id = $data['doctor_id'];
-            $Turno->institucion_id = $data['institucion_id'];
-            $Turno->dia = $data['dia'];
-            $Turno->hora = $data['hora'];
-            $Turno->save();   
+            $turno = new Turno();  
+            $turno->doctor_id = $data['doctor_id'];
+            $turno->institucion_id = $data['institucion_id'];
+            $turno->dia = $data['dia'];
+            $turno->hora = $data['hora'];
+            $turno->save();   
             
-            $Turno->load('doctor', 'institucion');
+            $turno->load('doctor', 'institucion');
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'message' => 'El turno fue dado de alta',
-                'descripción' => $Turno
-                ]));               
-           
+                'descripción' => $turno
+            ]));               
         } else {
             $status = 400;
             $response->getBody()->write(json_encode([
                 'success' => false,
                 'message' => 'El turno no fue dado de alta',
                 'errores' => $mensaje
-                ]));   
+            ]));   
         }
         
         return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
-           
     }
 
     public function cancelarTurno(Request $request, Response $response, $args){
@@ -148,14 +142,44 @@ class TurnosController
 
         }
 
-        //In progress, no está listo
        public function actualizarTurno(Request $request, Response $response, $args){
-        $data = $request->getParsedBody();
-        $id = $args['id'];
-        $Turno = Turno::find($id);
+        $mensaje        = [];
+        $data           = $request->getParsedBody();
+        $id             = $args['id'];
+        $Turno          = Turno::find($id);
+        $validacionDatos = false;
+
         if (!$Turno) {
-            $response->getBody()->write("Turno no encontrado");
-            return $response->withStatus(404);
+            $validacionDatos = true;
+            $mensaje[] = "El turno no existe";        
+        }
+        
+        $doctor_id = $data['doctor_id'] ?? $Turno->doctor_id;
+        $institucion_id = $data['institucion_id'] ?? $Turno->institucion_id;
+        $dia = $data['dia'] ?? $Turno->dia;
+        $hora = $data['hora'] ?? $Turno->hora;
+        
+        $existeDoctor = Doctor::where("id", $doctor_id)->exists();
+        $existeInstitucion = Institucion::where("id", $institucion_id)->exists(); 
+        $existeTurno = Turno::where('doctor_id', $doctor_id)
+            ->where('dia', $dia)
+            ->where('hora', $hora)
+            ->where('id', '<>', $id) 
+            ->exists();
+        
+        if (!$existeDoctor || !$existeInstitucion) {
+            $validacionDatos = true;
+            $mensaje[] = "El doctor o la institución no existen";
+        }
+        
+        if ($existeTurno) {
+            $validacionDatos = true;
+            $mensaje[] = "El turno ya existe o el doctor está ocupado en otra institución en esta fecha y hora.";
+        }
+        
+        if (!v::date('Y-m-d')->validate($dia) || !v::regex('/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/')->validate($hora)) {
+            $validacionDatos = true;
+            $mensaje[] ="Fecha u hora incorrecta.";      
         }
         
         $camposActualizados = 0;
@@ -167,13 +191,26 @@ class TurnosController
             }
         }
         
-        if ($camposActualizados > 0) {
+        if ($camposActualizados > 0 && !$validacionDatos) {
+            $status = 200;
             $Turno->save();
-            $response->getBody()->write("Turno actualizado");
+            $Turno->load('doctor', 'institucion');
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => 'El turno fue modificado',
+                'descripción' => $Turno
+            ]));   
         } else {
-            $response->getBody()->write("Ningún campo para actualizar");
+            $status = 400;
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'message' => 'Ningún campo para actualizar',
+                'errores' => $mensaje
+            ])); 
         }
         
-        return $response;          
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
+        
+ 
       }
 }

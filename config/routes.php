@@ -21,7 +21,7 @@ $app->addRoutingMiddleware();
 $app->get('/obtenerTurno/{id}', \App\Controllers\TurnosController::class . ':obtenerTurno');
 $app->post('/altaTurno', \App\Controllers\TurnosController::class . ':altaTurno');
 $app->delete('/cancelarTurno/{id}', \App\Controllers\TurnosController::class . ':cancelarTurno');
-$app->put('/actualizarTurno/{id}', \App\Controllers\TurnosController::class . ':actualizarTurno');
+$app->post('/actualizarTurno/{id}', \App\Controllers\TurnosController::class . ':actualizarTurno');
 $app->get('/obtenerTurnos', \App\Controllers\TurnosController::class . ':obtenerTurnos');
 
 $app->run();
