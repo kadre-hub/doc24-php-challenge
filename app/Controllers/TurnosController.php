@@ -149,7 +149,7 @@ class TurnosController
         }
 
         //In progress, no está listo
-       public function actualizarTurno(RequestPatch $request, ResponsePatch $response, $args){
+       public function actualizarTurno(Request $request, Response $response, $args){
         $data = $request->getParsedBody();
         $id = $args['id'];
         $Turno = Turno::find($id);

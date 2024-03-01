@@ -13,6 +13,9 @@ require __DIR__.'/../app/Controllers/TurnosController.php';
 
 $app = AppFactory::create();
 
+$app->add(new Slim\Middleware\MethodOverrideMiddleware);
+
+
 $app->addRoutingMiddleware();
 
 $app->get('/obtenerTurno/{id}', \App\Controllers\TurnosController::class . ':obtenerTurno');
