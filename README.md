@@ -15,10 +15,7 @@ cd 'project-directory'
 3. Instalar las dependencias: 
 composer install
 4. Crear la base de datos
-5. Crear y configurar archivo .env en el raíz del proyecto, que incluya la siguiente configuración: DATABASE_DRIVER,DATABASE_PORT,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWD,DATABASE_CHARSET,DATABASE_COLLATION,DATABASE_PREFIX
-
-ENTITY_DIR = './src/Entity/'
-DEBUG      = 0
+5. Crear y configurar archivo .env en el raíz del proyecto, que incluya la siguiente configuración: DATABASE_DRIVER, DATABASE_PORT, DATABASE_NAME,DATABASE_USER, DATABASE_PASSWD, DATABASE_CHARSET, DATABASE_COLLATION, DATABASE_PREFIX, ENTITY_DIR = './src/Entity/'
 
 ## Post instalación
 
