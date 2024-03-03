@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "e517f8b2-3ccb-4002-b611-8b3ce7eb79c4",
+		"name": "Turnos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33302512"
+	},
+	"item": [
+		{
+			"name": "obtenerTurnos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "doctor_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "institucion_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "2024-07-01",
+							"type": "text"
+						},
+						{
+							"key": "hora",
+							"value": "12:30",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/obtenerTurnos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"obtenerTurnos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtenerTurno{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/obtenerTurno/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"obtenerTurno",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cancelarTurno{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/cancelarTurno/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cancelarTurno",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "altaTurno",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "doctor_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "institucion_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "2024-03-11",
+							"description": "Formato YYYY-MM-DD",
+							"type": "text"
+						},
+						{
+							"key": "hora",
+							"value": "22:27:01",
+							"description": "Formato HH:MM:SS",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/altaTurno",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"altaTurno"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actualizarTurno{id}",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "institucion_id",
+							"value": "2",
+							"description": "Formato entero",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "2024-05-31",
+							"description": "YYYY-MM-DD",
+							"type": "text"
+						},
+						{
+							"key": "hora",
+							"value": "12:00:00",
+							"description": "HH:mm:ss",
+							"type": "text"
+						},
+						{
+							"key": "doctor_id",
+							"value": "1",
+							"description": "Formato entero",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/actualizarTurno/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"actualizarTurno",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

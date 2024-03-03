@@ -1,54 +1,50 @@
-# Doc24 > Medical turns challenge
+# Doc24 > CRUD de turnos médicos
 
-To start you'll need to fork this repo. Once finish please submit a PR using the following format in the title:
-
-`[your-name] - Doc24 backend challenge`
-
-## Requirements
+## Requerimientos
 
 - PHP (Slim Framework)
 - Composer
 - PostgreSQL
 
-## Installation
+## instalación
 
-To install the project, follow these steps:
+1. Clonar el repositorio: 
+git clone 'repository-url'
+2. Ingresar a la carpeta del proyecto: 
+cd 'project-directory'
+3. Instalar las dependencias: 
+composer install
+4. Crear la base de datos en postgresql
+5. Crear y configurar archivo .env en el raíz del proyecto, que incluya la siguiente configuración: DATABASE_DRIVER (para pgsql), DATABASE_PORT, DATABASE_NAME,DATABASE_USER, DATABASE_PASSWD, DATABASE_CHARSET, DATABASE_COLLATION, DATABASE_PREFIX, ENTITY_DIR = './src/Entity/'
 
-1. Clone the repository: `git clone <repository-url>`
-2. Navigate into the project directory: `cd <project-directory>`
-3. Install the dependencies: `composer install`
+## Post instalación
 
-## Database
+1. Instalar psr7: 
+composer require slim/psr7
+2. Instalación del ORM (Eloquent):
+composer require illuminate/database "~5.1"
+3. Instalar dependencia para validaciones: 
+composer require respect/validation
+4. Instalación de dependencia para el manejo del .env: 
+composer require vlucas/phpdotenv
+5. Instalar el phinx para crear y correr las migrations y seeds: 
+composer require robmorgan/phinx
+6. Correr migraciones: 
+vendor/bin/phinx migrate
+7. Correr seeds:
+vendor/bin/phinx seed:run
 
-Feel free to name your DB as you want, we want to see you creating all schemas, models and tables you may think are necessary and feel free to come up with your own data structure. Keep it simple to a minimum structure of data as possible.
+## Corriendo la app
 
-Add a seeder for the DB so we can actually test the app with some dummy data.
-
-## Running the Application
-
-To run the application, use the following command:
-
-```bash
 php -S localhost:[PORT] -t public
-```
 
-## What should I do?
+## Postman
 
-You'll need to build a REST API that will allow users the following:
+Descargar la colección de Postman en la carpeta /api e importarla en Postman
 
-- Login and Logout.
-- Once logged, create a CRUD endpont to manage medical turns.
-- Medical turns should include an Institution (place), a Doctor, a day and a time.
-- You cannot set 2 appointments for the same doctor at the same time or institutions.
-- Feel free to create the folder structure you think will cover the requirements under `./src` folder.
-- We want to see you validate authentication using a middleware and make sure only login is a public endpoint.
-- Get the app ready to be tested by using Postman.
-- Replace this README file to provide your own instructions on how to run the app, DB, seeder and provide a Postman collection to test the endpoints.
-- Please use an ORM to interact with PostgreSQL.
+## A tener en cuenta
 
-## To have in mind
+A tener en cuenta:
+El formato de la hora correcta para el alta o modificación es HH:mm:ss
 
-- Authentication must be done using JWT
-- Use PostgreSQL as a database engine
-- Try to write a clean code
-- Use `.env` files to secure sensitive information
+
