@@ -10,11 +10,11 @@ final class CreateTurnosTable extends AbstractMigration
     {                   
         $table = $this->table('turnos');
         $table->addColumn('doctor_id', 'integer')
-      ->addColumn('institucion_id', 'integer')
-      ->addColumn('dia', 'date')
-      ->addColumn('hora', 'time')
-      ->addTimestamps()     
-      ->addIndex(['doctor_id', 'dia', 'hora'], ['unique' => true])     
-      ->create();
+        ->addColumn('institucion_id', 'integer')
+        ->addColumn('dia', 'date')
+        ->addColumn('hora', 'time')
+        ->addTimestamps()     
+        ->addIndex(['doctor_id', 'dia', 'hora'], ['unique' => true])     
+        ->create();
     }
 }
